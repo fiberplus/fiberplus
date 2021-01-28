@@ -39,7 +39,7 @@ var createModelCmd = &cobra.Command{
 				return
 			}
 			defer file.Close()
-
+			// Add content
 			n3, err := file.WriteString(
 				"package " + input.path + "\n\n" +
 					"type " + input.param + " {\n " +
