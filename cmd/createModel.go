@@ -39,6 +39,14 @@ var createModelCmd = &cobra.Command{
 				return
 			}
 			defer file.Close()
+
+			n3, err := file.WriteString(
+				"package " + input.path + "\n\n" +
+					"type " + input.param + " {\n " +
+					"\n\n}",
+			)
+			check(err)
+			fmt.Printf("wrote %d bytes\n", n3)
 		} else {
 			fmt.Println(input.errorLine, filename)
 			return
