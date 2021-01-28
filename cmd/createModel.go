@@ -1,17 +1,3 @@
-// Copyright © 2017 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
@@ -23,17 +9,26 @@ import (
 
 // helloCmd represents the hello command
 var createModelCmd = &cobra.Command{
-	Use:   "create-model",
+	Use:   "create::model",
 	Short: "Create model commad",
 	Long:  `This subcommand create model`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create model::" + args[0])
+
+		// fmt.Println("create model" + args[0])
+		input := input{
+			param:       args[0],
+			path:        "models",
+			errorLine:   "Model already exists! ",
+			successLine: "File created successfully ",
+		}
+
 		if len(args[0]) == 0 {
-			fmt.Println("Please provide a filename")
+			fmt.Println("Please provide a valid command")
 			return
 		}
 
-		filename := "models/" + args[0] + ".go"
+		// TODO add basic model boilerplates
+		filename := input.path + "/" + input.param + ".go"
 
 		var _, err = os.Stat(filename)
 
@@ -45,11 +40,13 @@ var createModelCmd = &cobra.Command{
 			}
 			defer file.Close()
 		} else {
-			fmt.Println("File already exists!", filename)
+			fmt.Println(input.errorLine, filename)
 			return
 		}
 
-		fmt.Println("File created successfully", filename)
+		fmt.Println(input.successLine, filename)
+		return
+
 	},
 }
 
