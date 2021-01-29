@@ -28,30 +28,71 @@ var createRepositoryCmd = &cobra.Command{
 			fmt.Println("Please provide a valid command")
 			return
 		}
+		pathdirectory := input.path + "/" + strings.ToLower(input.param)
 
-		errx := os.Mkdir(input.path+"/"+strings.ToLower(input.param), 0755)
-		if errx != nil {
-			log.Fatal(errx)
+		// Check directory is exist
+		stat := exists(pathdirectory)
+		// If not exist create the directory
+		if stat == false {
+			// create the directory
+			errx := os.Mkdir(input.path+"/"+strings.ToLower(input.param), 0755)
+			if errx != nil {
+				log.Fatal(errx)
+			}
+
 		}
 
 		// TODO add basic model boilerplates
-		filename := input.path + "/" + input.param + "service.go"
+		service := pathdirectory + "/service.go"
+		repository := pathdirectory + "/repository.go"
 
-		var _, err = os.Stat(filename)
+		//  var _, _ = os.Stat(filename)
 
-		if os.IsNotExist(err) {
-			file, err := os.Create(filename)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			defer file.Close()
-		} else {
-			fmt.Println(input.errorLine, filename)
-			return
+		serviceExists := exists(service)
+		var blueprint string
+		blueprint = "package " + input.path + "\n\n" +
+			"import (\n" +
+			"\"github/sacsand/fiberPlus\"" + "\n" +
+			"\"gorm.io/gorm\"" + "\n" +
+			")\n\n" +
+
+			"type repository interface { \n" +
+			input.param + "(paramA int , paramB int)(int,error)\n}"
+		// If not exist create the directory
+		if serviceExists == false {
+			// create the directory
+			createFile(service, blueprint)
 		}
 
-		fmt.Println(input.successLine, filename)
+		repositoryExists := exists(repository)
+
+		if repositoryExists == false {
+
+			var x string
+			x = "package " + input.path + "\n\n" +
+				"import (\n" +
+				"\"github/sacsand/fiberPlus\"" + "\n" +
+				"\"gorm.io/gorm\"" + "\n" +
+				")\n\n" +
+
+				"type repository interface { \n" +
+				"  " + input.param + "(paramA int , paramB int)(int,error) \n\n\n}" +
+				"//repository struct \n" +
+				"type repository struct { \n" +
+				"	db *gorm.DB \n" +
+				"} \n\n" +
+				"// NewRepo is the single instance repo that is being created. \n" +
+				"func NewRepo(db *gorm.DB) Repository { \n" +
+				"return &repository{ \n" +
+				"db: db,\n" +
+				"}\n" +
+				"}\n"
+
+			// create the directory
+			createFile(repository, x)
+		}
+
+		fmt.Println(input.successLine, input.param)
 		return
 
 	},
