@@ -42,7 +42,7 @@ var createModelCmd = &cobra.Command{
 			// Add content
 			n3, err := file.WriteString(
 				"package " + input.path + "\n\n" +
-					"type " + input.param + " {\n " +
+					"type " + input.param + " struct {\n " +
 					"\n\n}",
 			)
 			check(err)

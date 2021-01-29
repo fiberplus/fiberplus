@@ -17,7 +17,7 @@ var createRepositoryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// fmt.Println("create model" + args[0])
-		
+
 		var model string
 
 		if len(args[0]) == 0 {
@@ -93,22 +93,33 @@ var createRepositoryCmd = &cobra.Command{
 			var x string
 			x = "package " + input.path + "\n\n" +
 				"import (\n" +
-				"\"github/sacsand/fiberPlus\"" + "\n" +
+				"\"github/sacsand/fiberPlus/model\"" + "\n" +
 				"\"gorm.io/gorm\"" + "\n" +
 				")\n\n" +
 
-				"type repository interface { \n" +
-				"  " + input.param + "(paramA int , paramB int)(int,error) \n\n\n}" +
+				"type Repository interface { \n" +
+				"   Find(id int)(int,error) \n" +
+				"   //other services... \n}" +
+				"\n\n" +
 				"//repository struct \n" +
 				"type repository struct { \n" +
 				"	db *gorm.DB \n" +
 				"} \n\n" +
 				"// NewRepo is the single instance repo that is being created. \n" +
 				"func NewRepo(db *gorm.DB) Repository { \n" +
-				"return &repository{ \n" +
-				"db: db,\n" +
-				"}\n" +
-				"}\n"
+				"  return &repository{ \n" +
+				"    db: db,\n" +
+				"  }\n" +
+				"}\n\n" +
+				"//Find - Find user repository\n" +
+				"func (r *repository) Find(id int) (*model." + model + ", error) {\n" +
+				"   var data model." + model + "\n" +
+				"   result := r.db.Where(\"id = ?\",id).Find(&data)\n" +
+				"	if result.Error != nil {\n" +
+				"      return data, result.Error\n" +
+				"   }\n\n" +
+				"   return data, nil\n" +
+				"}"
 
 			// create the directory
 			createFile(repository, x)
