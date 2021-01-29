@@ -54,19 +54,36 @@ var createRepositoryCmd = &cobra.Command{
 		//  var _, _ = os.Stat(filename)
 
 		serviceExists := exists(service)
-		var blueprint string
-		blueprint = "package " + input.path + "\n\n" +
+
+		var x string
+		x = "package " + input.path + "\n\n" +
 			"import (\n" +
-			"\"github/sacsand/fiberPlus\"" + "\n" +
+			"\"github/sacsand/fiberPlus/model\"" + "\n" +
 			"\"gorm.io/gorm\"" + "\n" +
 			")\n\n" +
 
-			"type repository interface { \n" +
-			input.param + "(paramA int , paramB int)(int,error)\n}"
+			"type Service interface { \n" +
+			"   ReturnFinds(id int)(int,error) \n" +
+			"   //other services... \n}" +
+			"\n\n" +
+			"//service struct \n" +
+			"type service struct { \n" +
+			"	repository Repository \n" +
+			"} \n\n" +
+			"// NewService is the single instance repo that is being created. \n" +
+			"func NewService(r Repository) Service { \n" +
+			"  return &service{ \n" +
+			"    repository: r,\n" +
+			"  }\n" +
+			"}\n\n" +
+			"//ReturnFinds - Return Finds\n" +
+			"func (s *service) ReturnFinds(id int) (*model." + model + ", error) {\n" +
+			"   return s.repository.ReturnFinds(id)\n" +
+			"}"
 		// If not exist create the directory
 		if serviceExists == false {
 			// create the directory
-			createFile(service, blueprint)
+			createFile(service, x)
 		}
 
 		repositoryExists := exists(repository)
