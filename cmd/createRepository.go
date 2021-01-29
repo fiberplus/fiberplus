@@ -17,6 +17,14 @@ var createRepositoryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// fmt.Println("create model" + args[0])
+		
+		var model string
+
+		if len(args[0]) == 0 {
+			fmt.Println("Please provide a valid command")
+			return
+		}
+
 		input := input{
 			param:       args[0],
 			path:        "pkg",
@@ -24,10 +32,7 @@ var createRepositoryCmd = &cobra.Command{
 			successLine: "File created successfully ",
 		}
 
-		if len(args[0]) == 0 {
-			fmt.Println("Please provide a valid command")
-			return
-		}
+		model = input.param
 		pathdirectory := input.path + "/" + strings.ToLower(input.param)
 
 		// Check directory is exist
