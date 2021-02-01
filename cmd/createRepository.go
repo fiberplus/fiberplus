@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +30,7 @@ var createRepositoryCmd = &cobra.Command{
 			param:       args[0],
 			path:        "pkg",
 			errorLine:   "model already exists! ",
-			successLine: "File created successfully ",
+			successLine: "Repository created succecfully ",
 		}
 
 		model = input.param
@@ -125,6 +126,22 @@ var createRepositoryCmd = &cobra.Command{
 			createFile(repository, x)
 		}
 
+		// create model IF not exist
+		modelname := "models/" + strcase.ToLowerCamel(input.param) + ".go"
+		modelExists := exists(modelname)
+
+		if modelExists == false {
+
+			var x string
+
+			x = "package " + input.path + "\n\n" +
+				"type " + input.param + " struct {\n " +
+				"\n\n}"
+
+			createFile(modelname, x)
+
+		}
+
 		fmt.Println(input.successLine, input.param)
 		return
 
@@ -133,14 +150,4 @@ var createRepositoryCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(createRepositoryCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// helloCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// helloCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
