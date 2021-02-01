@@ -41,3 +41,28 @@ this create ,
 
 controllers/UserControllers.go
 
+##Note1 
+
+Start with capitel letters when naming model, controller or repository
+
+##Note2 -How to Overide defualt folder structure(not recommend)
+default directory structure is below
+
+```
+modelpath: "models"
+pkgpath:  "pkg"
+controllerpath: "controllers"
+```
+
+to override value
+you need to create `.fiberplus.yaml` in your root directory of your application and add the overriden values. (This feature is experimental)
+
+```
+modelpath: "model"
+pkgpath:  "packges"
+controllerpath: "routers"
+```
+
+
+
+
