@@ -1,0 +1,4 @@
+
+modelpath: "models"
+pkgpath:  "pkg"
+controllerpath: "controllers"
