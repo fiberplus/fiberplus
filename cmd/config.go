@@ -1,6 +1,12 @@
 package cmd
 
-import "os"
+import (
+	"io/ioutil"
+	"log"
+	"os"
+
+	"gopkg.in/yaml.v2"
+)
 
 func check(e error) {
 	if e != nil {
@@ -33,4 +39,36 @@ type input struct {
 	path        string
 	errorLine   string
 	successLine string
+}
+
+type config struct {
+	ModelPath      string `yaml:"modelpath"`
+	PkgPath        string `yaml:"pkgpath"`
+	ControllerPath string `yaml:"pkgpath"`
+}
+
+func (c *config) getConfig() *config {
+
+	yamlFile, err := ioutil.ReadFile(".fiberplus.yaml")
+	if err != nil {
+		log.Printf("yamlFile.Get err   #%v ", err)
+	}
+	err = yaml.Unmarshal(yamlFile, c)
+	if err != nil {
+		log.Fatalf("Unmarshal: %v", err)
+	}
+
+	// if yaml not exist use below values
+
+	if len(c.ModelPath) < 1 {
+		c.ModelPath = "models"
+	}
+	if len(c.PkgPath) < 1 {
+		c.ModelPath = "pkg"
+	}
+	if len(c.ControllerPath) < 1 {
+		c.ModelPath = "controller"
+	}
+
+	return c
 }
