@@ -1,6 +1,6 @@
 package main
 
-import "github.com/sacsand/fiberplus/cmd"
+import "github.com/fiberplus/fiberplus/cmd"
 
 func main() {
 	cmd.Execute()
