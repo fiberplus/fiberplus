@@ -34,6 +34,13 @@ func createFile(filePath, content string) (err error) {
 	return
 }
 
+func createDirectory(path string) {
+	_ = os.Mkdir(path, 0700)
+	// if _, err := os.Stat(path); os.IsNotExist(err) {
+	// 	os.Mkdir(path, 755)
+	// }
+}
+
 type input struct {
 	param       string
 	path        string
@@ -44,7 +51,7 @@ type input struct {
 type config struct {
 	ModelPath      string `yaml:"modelpath"`
 	PkgPath        string `yaml:"pkgpath"`
-	ControllerPath string `yaml:"pkgpath"`
+	ControllerPath string `yaml:"controllerpath"`
 }
 
 func (c *config) getConfig() *config {
@@ -64,11 +71,15 @@ func (c *config) getConfig() *config {
 		c.ModelPath = "models"
 	}
 	if len(c.PkgPath) < 1 {
-		c.ModelPath = "pkg"
+		c.PkgPath = "pkg"
 	}
 	if len(c.ControllerPath) < 1 {
-		c.ModelPath = "controller"
+		c.ControllerPath = "controllers"
 	}
+
+	createDirectory(c.ModelPath)
+	createDirectory(c.ControllerPath)
+	createDirectory(c.PkgPath)
 
 	return c
 }
