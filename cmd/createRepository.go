@@ -18,6 +18,8 @@ var createRepositoryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// fmt.Println("create model" + args[0])
+		var c config
+		c.getConfig()
 
 		var model string
 
@@ -28,7 +30,7 @@ var createRepositoryCmd = &cobra.Command{
 
 		input := input{
 			param:       args[0],
-			path:        "pkg",
+			path:        c.PkgPath, //"pkg",
 			errorLine:   "model already exists! ",
 			successLine: "Repository created succecfully ",
 		}
@@ -127,7 +129,7 @@ var createRepositoryCmd = &cobra.Command{
 		}
 
 		// create model IF not exist
-		modelname := "models/" + strcase.ToLowerCamel(input.param) + ".go"
+		modelname := c.ModelPath + "/" + strcase.ToLowerCamel(input.param) + ".go"
 		modelExists := exists(modelname)
 
 		if modelExists == false {

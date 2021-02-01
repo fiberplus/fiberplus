@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +15,13 @@ var createModelCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// fmt.Println("create model" + args[0])
+
+		var c config
+		c.getConfig()
+
 		input := input{
 			param:       args[0],
-			path:        "models",
+			path:        c.ModelPath,
 			errorLine:   "Model already exists! ",
 			successLine: "File created successfully ",
 		}
@@ -27,32 +31,23 @@ var createModelCmd = &cobra.Command{
 			return
 		}
 
-		// TODO add basic model boilerplates
-		filename := input.path + "/" + input.param + ".go"
+		// create model IF not exist
+		modelname := input.path + "/" + strcase.ToLowerCamel(input.param) + ".go"
+		modelExists := exists(modelname)
 
-		var _, err = os.Stat(filename)
+		if modelExists == false {
 
-		if os.IsNotExist(err) {
-			file, err := os.Create(filename)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			defer file.Close()
-			// Add content
-			n3, err := file.WriteString(
-				"package " + input.path + "\n\n" +
-					"type " + input.param + " struct {\n " +
-					"\n\n}",
-			)
-			check(err)
-			fmt.Printf("wrote %d bytes\n", n3)
-		} else {
-			fmt.Println(input.errorLine, filename)
-			return
+			var x string
+
+			x = "package " + input.path + "\n\n" +
+				"type " + input.param + " struct {\n " +
+				"\n\n}"
+
+			createFile(modelname, x)
+
 		}
 
-		fmt.Println(input.successLine, filename)
+		fmt.Println(input.successLine, input.param)
 		return
 
 	},

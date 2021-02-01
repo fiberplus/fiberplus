@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
@@ -14,12 +14,14 @@ var createControllerCmd = &cobra.Command{
 	Long:  `This sub command create controllers`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// fmt.Println("create model" + args[0])
+		var c config
+		c.getConfig()
+
 		input := input{
 			param:       args[0],
-			path:        "controllers",
+			path:        c.ControllerPath,
 			errorLine:   "Controller already exists! ",
-			successLine: "File created successfully ",
+			successLine: "Controller created successfully ",
 		}
 
 		if len(args[0]) == 0 {
@@ -27,24 +29,23 @@ var createControllerCmd = &cobra.Command{
 			return
 		}
 
-		// TODO add basic model boilerplates
-		filename := input.path + "/" + input.param + ".go"
+		// create model IF not exist
+		controllerName := input.path + "/" + strcase.ToLowerCamel(input.param) + ".go"
+		controllerExists := exists(controllerName)
 
-		var _, err = os.Stat(filename)
+		if controllerExists == false {
 
-		if os.IsNotExist(err) {
-			file, err := os.Create(filename)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			defer file.Close()
-		} else {
-			fmt.Println(input.errorLine, filename)
-			return
+			var x string
+
+			x = "package " + input.path + "\n\n" +
+				"type " + input.param + " struct {\n " +
+				"\n\n}"
+
+			createFile(controllerName, x)
+
 		}
 
-		fmt.Println(input.successLine, filename)
+		fmt.Println(input.successLine, input.param)
 		return
 
 	},
