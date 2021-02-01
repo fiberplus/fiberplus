@@ -4,3 +4,4 @@ middleware
 models
 pkg
 .fiberplus.yml
+command.json
