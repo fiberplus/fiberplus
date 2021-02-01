@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +30,7 @@ var createRepositoryCmd = &cobra.Command{
 			param:       args[0],
 			path:        "pkg",
 			errorLine:   "model already exists! ",
-			successLine: "File created successfully ",
+			successLine: "Repository created succecfully ",
 		}
 
 		model = input.param
@@ -123,6 +124,22 @@ var createRepositoryCmd = &cobra.Command{
 
 			// create the directory
 			createFile(repository, x)
+		}
+
+		// create model IF not exist
+		modelname := "models/" + strcase.ToLowerCamel(input.param) + ".go"
+		modelExists := exists(modelname)
+
+		if modelExists == false {
+
+			var x string
+
+			x = "package " + input.path + "\n\n" +
+				"type " + input.param + " struct {\n " +
+				"\n\n}"
+
+			createFile(modelname, x)
+
 		}
 
 		fmt.Println(input.successLine, input.param)
