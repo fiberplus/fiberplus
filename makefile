@@ -1,1 +1,1 @@
-curl https://sum.golang.org/lookup/github.com/sacsand/fiberplus@v0.0.2
+curl https://sum.golang.org/lookup/github.com/sacsand/fiberplus@v0.0.3
