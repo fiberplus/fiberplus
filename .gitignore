@@ -3,5 +3,6 @@ controllers
 middleware
 models
 pkg
-.fiberplus.yml
+pkg/*
+.fiberplus.yaml
 command.json
