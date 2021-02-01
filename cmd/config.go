@@ -8,18 +8,6 @@ func check(e error) {
 	}
 }
 
-// exists returns whether the given file or directory exists
-// func exists(path string) (bool, error) {
-// 	_, err := os.Stat(path)
-// 	if err == nil {
-// 		return true, nil
-// 	}
-// 	if os.IsNotExist(err) {
-// 		return false, nil
-// 	}
-// 	return false, err
-// }
-
 var exists = func(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return false
@@ -46,18 +34,3 @@ type input struct {
 	errorLine   string
 	successLine string
 }
-
-// type blueprint struct {
-// 	service    string
-// 	repository string
-// }
-
-// var BlueprintDefault = blueprint{
-// 	service: "package " + input.path + "\n\n" +
-// 		"type " + input.param + " struct {\n " +
-// 		"\n\n}",
-
-// 	repository: "package " + input.path + "\n\n" +
-// 		"type " + input.param + " struct {\n " +
-// 		"\n\n}",
-// }
