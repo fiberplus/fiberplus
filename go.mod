@@ -1,4 +1,4 @@
-module github/sacsand/fiberplus
+module github.com/sacsand/fiberplus
 
 go 1.15
 
