@@ -3,7 +3,7 @@ Simple command line interface to generate boilerplates codes with repository pat
 
 # Installation
 ```bash
-go get -u github.com/sacsand/fiberplus
+go get -u github.com/fiberplus/fiberplus
 ```
 
 # Commands
