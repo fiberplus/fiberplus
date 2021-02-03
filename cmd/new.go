@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +17,7 @@ var (
 var NewCmd = &cobra.Command{
 	Use:   "generate::project",
 	Short: "Generate new project",
-	Long:  `This subcommand create new fiber plus project`,
+	Long:  `project create succefully`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// fmt.Println("create model" + args[0])
@@ -36,23 +37,12 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		// // create model IF not exist
-		// modelname := input.path + "/" + strcase.ToLowerCamel(input.param) + ".go"
-		// modelExists := exists(modelname)
+		err := createComplex("./", strcase.ToLowerCamel(input.param))
 
-		// if modelExists == false {
-
-		// 	var x string
-
-		// 	x = "package " + input.path + "\n\n" +
-		// 		"type " + input.param + " struct {\n " +
-		// 		"\n\n}"
-
-		// 	createFile(modelname, x)
-
-		// }
-
-		createComplex("./", input.param)
+		if err != nil {
+			fmt.Println("Error", err)
+			return
+		}
 
 		fmt.Println(input.successLine, input.param)
 		return
