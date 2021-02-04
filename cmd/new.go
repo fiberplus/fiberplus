@@ -37,7 +37,7 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		err := createComplex("./", strcase.ToLowerCamel(input.param))
+		err := createComplex("./"+strcase.ToLowerCamel(input.param), strcase.ToLowerCamel(input.param))
 
 		if err != nil {
 			fmt.Println("Error", err)
