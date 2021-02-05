@@ -76,8 +76,11 @@ type config struct {
 func (c *config) getConfig() *config {
 
 	yamlFile, err := ioutil.ReadFile(".fiberplus.yaml")
-	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
+	if err != nil { // if yamlFile not found
+		// log.Printf("yamlFile.Get err   #%v ", err)
+		c.ModelPath = "models"
+		c.PkgPath = "pkg"
+		c.ControllerPath = "controllers"
 	}
 	err = yaml.Unmarshal(yamlFile, c)
 	if err != nil {
