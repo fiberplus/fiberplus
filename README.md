@@ -1,5 +1,11 @@
-# fiber plus
+# fiber plus (works in progress)
 Simple command line interface to generate boilerplates codes with repository pattern based structure in go fiber framework . 
+TODO
+load env deom one config -- laravel like
+define structure 
+documenting 
+
+
 
 # Installation
 ```bash
